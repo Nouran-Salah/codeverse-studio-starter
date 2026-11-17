@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codeverse-studio"
+dynamic = ["version"]
+description = "A LangGraph multi-agent workflow that plans educational computer-science videos."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Nouran Salah Ibrahim" }]
+keywords = ["langgraph", "multi-agent", "llm", "ollama", "education", "manim"]
+dependencies = [
+  "langgraph>=0.2.0",
+  "pydantic>=2.7.0",
+  "typer>=0.12.0",
+  "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110.0", "uvicorn>=0.29.0"]
+dev = ["pytest>=8.0.0", "pytest-cov>=5.0.0", "ruff>=0.5.0", "httpx>=0.27.0", "fastapi>=0.110.0"]
+
+[project.scripts]
+codeverse = "codeverse.cli:app"
+
+[tool.setuptools.dynamic]
+version = { attr = "codeverse.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["codeverse"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "C4", "RUF"]
+ignore = ["B008"]  # typer.Option(...) defaults are the idiomatic Typer API
